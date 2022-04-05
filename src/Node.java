@@ -1,13 +1,11 @@
 public class Node {
     public Node leftChild;
     public Node rightChild;
-    public long lDate;
+    public int iData; // Key
 
     public void displayNode() {
         System.out.print('{');
-        System.out.print(lDate);
-        System.out.print(", ");
-        System.out.print(lDate);
+        System.out.print(iData);
         System.out.print("} ");
     }
 }
