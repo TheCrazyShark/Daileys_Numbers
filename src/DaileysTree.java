@@ -29,7 +29,8 @@ public class DaileysTree {
     }
 
     public void build(Node current, int grandParentV,  int greatGrandParentV) {
-        Node newNode = new Node();    // make new node
+        Node newLeftNode = new Node();    // make new node
+        Node newRightNode = new Node();
         Node parent;
         Node grandParent = new Node();
         Node greatGrandParent = new Node();
@@ -40,24 +41,24 @@ public class DaileysTree {
             greatGrandParent.iData = greatGrandParentV;
 
             // Add Left Child
-            current = parent.leftChild;
-            if(current == null) { // if end of the line, insert on left
-                newNode.iData = parent.iData + greatGrandParent.iData; // Parent + parent’s grandparent
-                newNode.nodeDepth = parent.nodeDepth + 1;
+            //current = parent.leftChild;
+            if(parent.leftChild == null) { // if end of the line, insert on left
+                newLeftNode.iData = parent.iData + greatGrandParent.iData; // Parent + parent’s grandparent
+                newLeftNode.nodeDepth = parent.nodeDepth + 1;
 
-                parent.leftChild = newNode;
-                //System.out.print(current.iData + " " + grandParentV + " " + greatGrandParentV);
+                parent.leftChild = newLeftNode;
+                System.out.print(newLeftNode.iData + " " + grandParentV + " " + greatGrandParentV + "\n");
                 build(parent.leftChild, grandParent.iData, greatGrandParent.iData);
             }
 
             // Add Right Child
-            current = parent.rightChild;
-            if(current == null) { // if end of the line insert on right
-                newNode.iData = parent.iData + grandParent.iData; //parent + parent’s parent
-                newNode.nodeDepth = parent.nodeDepth + 1;
+            //current = parent.rightChild;
+            if(parent.rightChild == null) { // if end of the line insert on right
+                newRightNode.iData = parent.iData + grandParent.iData; //parent + parent’s parent
+                newRightNode.nodeDepth = parent.nodeDepth + 1;
 
-                parent.rightChild = newNode;
-                //System.out.print(current.iData + " " + grandParentV + " " + greatGrandParentV);
+                parent.rightChild = newRightNode;
+                System.out.print(newRightNode.iData + " " + grandParentV + " " + greatGrandParentV + "\n");
                 build(parent.rightChild, parent.iData , grandParent.iData);
             }
         }
