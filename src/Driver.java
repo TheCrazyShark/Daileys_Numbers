@@ -11,17 +11,9 @@ public class Driver {
             treeDepth = input.nextInt();
         } while(treeDepth < 2 && treeDepth > 26);
 
-        buildTree();
-    }
-
-    // Build the tree
-    public static void buildTree() {
-        for (int i = 0; i < treeDepth; i++) {
-            // Add all children
-        }
-        // root == 3
-        // The left node of a branch is computed as the sum of the parent and parent's grandparent.
-        // The right child of a node is computed as the sum of the parent and parent's parent.
+        DaileysTree = new DaileysTree(treeDepth);
+        Menu();
+        DaileysTree.findNumbers();
     }
 
     // Continue to ask the user if they want preorder, inorder, postorder tree traversal
@@ -30,12 +22,13 @@ public class Driver {
         boolean quit = false;
         String order = "";
 
-        while(quit != true) {
+        while (quit != true) {
             System.out.println("What order do you want to traverse the tree?\n1) PreOrder\n2) InOrder\n3) PostOrder\n4) Exit");
             menuNumber = input.nextInt();
 
-            switch(menuNumber){
-                case(1):
+            switch (menuNumber) {
+                case (1):
+                    DaileysTree.traverse(menuNumber);
                     order = "PreOrder";
                     break;
                 case(2):
@@ -44,19 +37,12 @@ public class Driver {
                 case(3):
                     order = "PostOrder";
                     break;
-                case(4):
-                    order = null;
+                case (4):
                     quit = true;
                     break;
             }
 
             System.out.println("Order Choice: " + order);
-            determineNumbers();
         }
-    }
-
-    // Determine the missing numbers as well as the count of every numbers
-    public static void determineNumbers() {
-
     }
 }
