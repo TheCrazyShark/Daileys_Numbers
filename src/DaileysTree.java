@@ -1,6 +1,8 @@
 public class DaileysTree {
     private Node root;
     private int treeDepth;
+    private double maxNumNodes;
+    private int totalNodes;
 
     public DaileysTree(int depth) {
         treeDepth = depth;
@@ -11,7 +13,17 @@ public class DaileysTree {
         newNode.nodeDepth = 1;
         root = newNode;
 
+        //maxNumNodes = Math.pow(2, depth-1);
+        calculateMaxNodes(depth);
+        totalNodes = 1;
+
         build(root, 2, 1); // Start recursive building
+    }
+
+    public void calculateMaxNodes(int depth) {
+        for(int i = depth; i > 0; i--) {
+            maxNumNodes += Math.pow(2, i-1);
+        }
     }
 
     // Determine the missing numbers as well as the count of every numbers
@@ -32,34 +44,33 @@ public class DaileysTree {
         Node newLeftNode = new Node();    // make new node
         Node newRightNode = new Node();
         Node parent;
-        Node grandParent = new Node();
-        Node greatGrandParent = new Node();
 
+        //while(totalNodes != maxNumNodes) {
         while(current.nodeDepth != treeDepth) {
             parent = current;
-            grandParent.iData = grandParentV;
-            greatGrandParent.iData = greatGrandParentV;
 
             // Add Left Child
             //current = parent.leftChild;
             if(parent.leftChild == null) { // if end of the line, insert on left
-                newLeftNode.iData = parent.iData + greatGrandParent.iData; // Parent + parent’s grandparent
+                newLeftNode.iData = parent.iData + greatGrandParentV; // Parent + parent’s grandparent
                 newLeftNode.nodeDepth = parent.nodeDepth + 1;
 
                 parent.leftChild = newLeftNode;
+                totalNodes += 1;
                 System.out.print(newLeftNode.iData + " " + grandParentV + " " + greatGrandParentV + "\n");
-                build(parent.leftChild, grandParent.iData, greatGrandParent.iData);
+                build(parent.leftChild, grandParentV, greatGrandParentV);
             }
 
             // Add Right Child
             //current = parent.rightChild;
             if(parent.rightChild == null) { // if end of the line insert on right
-                newRightNode.iData = parent.iData + grandParent.iData; //parent + parent’s parent
+                newRightNode.iData = parent.iData + grandParentV; //parent + parent’s parent
                 newRightNode.nodeDepth = parent.nodeDepth + 1;
 
                 parent.rightChild = newRightNode;
+                totalNodes += 1;
                 System.out.print(newRightNode.iData + " " + grandParentV + " " + greatGrandParentV + "\n");
-                build(parent.rightChild, parent.iData , grandParent.iData);
+                build(parent.rightChild, parent.iData , grandParentV);
             }
         }
     }
