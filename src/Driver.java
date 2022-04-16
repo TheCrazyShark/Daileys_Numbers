@@ -23,26 +23,29 @@ public class Driver {
         String order = "";
 
         while (quit != true) {
-            System.out.println("What order do you want to traverse the tree?\n1) PreOrder\n2) InOrder\n3) PostOrder\n4) Exit");
+            System.out.println("What order do you want to traverse the tree?\n1) PreOrder\n2) InOrder\n3) PostOrder\n4) Exit Order Selection");
             menuNumber = input.nextInt();
 
             switch (menuNumber) {
                 case (1):
                     DaileysTree.traverse(menuNumber);
                     order = "PreOrder";
+                    System.out.println("Order Choice: " + order);
                     break;
                 case(2):
+                    DaileysTree.traverse(menuNumber);
                     order = "InOrder";
+                    System.out.println("Order Choice: " + order);
                     break;
                 case(3):
+                    DaileysTree.traverse(menuNumber);
                     order = "PostOrder";
+                    System.out.println("Order Choice: " + order);
                     break;
                 case (4):
                     quit = true;
                     break;
             }
-
-            System.out.println("Order Choice: " + order);
         }
     }
 }

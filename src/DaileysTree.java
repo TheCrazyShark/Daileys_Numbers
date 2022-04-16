@@ -1,69 +1,112 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class DaileysTree {
     private Node root;
     private int treeDepth;
+    private int highestValue;
+    private HashMap<Integer, Integer> hmap;
+    private int missingNums[];
 
     public DaileysTree(int depth) {
         treeDepth = depth;
+        highestValue = 0;
+        hmap = new HashMap<Integer, Integer>();
+        hmap.put(1,1);
+        hmap.put(2,1);
 
         // Initialize Root
         Node newNode = new Node();
         newNode.iData = 3;
         newNode.nodeDepth = 1;
+        newNode.grandParent = 2;
+        newNode.greatGrandParent = 1;
         root = newNode;
 
-        build(root, 2, 1); // Start recursive building
+        build(root); // Start recursive building
+    }
+
+    // Recursively build entire tree
+    public void build(Node current) {
+        Node newLeftNode = new Node();    // make new node
+        Node newRightNode = new Node();
+        Node parent;
+
+        while(current.nodeDepth != treeDepth && current.leftChild == null && current.rightChild == null) {
+            parent = current;
+
+            // Make Left Node
+            newLeftNode.iData = parent.iData + parent.greatGrandParent; // Parent + parent’s grandparent
+            newLeftNode.nodeDepth = parent.nodeDepth + 1;
+            parent.leftChild = newLeftNode;
+
+            // Make Right Node
+            newRightNode.iData = parent.iData + parent.grandParent; // Parent + parent’s parent
+            newRightNode.nodeDepth = parent.nodeDepth + 1;
+            parent.rightChild = newRightNode;
+
+            // Assign new grandparent/great grandparent values
+            newLeftNode.greatGrandParent = parent.grandParent;
+            newLeftNode.grandParent = parent.iData;
+            newRightNode.greatGrandParent = parent.grandParent;
+            newRightNode.grandParent = parent.iData;
+
+            // Get new highest value
+            if(parent.rightChild.iData > highestValue) {
+                highestValue = current.rightChild.iData;
+            }
+
+            // Build out tree left and right
+            build(parent.leftChild);
+            build(parent.rightChild);
+        }
     }
 
     // Determine the missing numbers as well as the count of every numbers
     public void findNumbers() {
-        /*
-            1. Create map
-            2. Loop through every value in the tree
-            3. For every value in the tree, check if value exists in the map
-                4. If no, create new value in the tree with count 1
-                5. If yes, add 1 to the value's count
-         */
+        loopNumbers(root); // Put all values from tree into hashmap
 
-        // Map: geeksforgeeks.org/implementing-associate-array-in-java/
-        return;
-    }
-
-    public void build(Node current, int grandParentV,  int greatGrandParentV) {
-        Node newLeftNode = new Node();    // make new node
-        Node newRightNode = new Node();
-        Node parent;
-        Node grandParent = new Node();
-        Node greatGrandParent = new Node();
-
-        while(current.nodeDepth != treeDepth) {
-            parent = current;
-            grandParent.iData = grandParentV;
-            greatGrandParent.iData = greatGrandParentV;
-
-            // Add Left Child
-            //current = parent.leftChild;
-            if(parent.leftChild == null) { // if end of the line, insert on left
-                newLeftNode.iData = parent.iData + greatGrandParent.iData; // Parent + parent’s grandparent
-                newLeftNode.nodeDepth = parent.nodeDepth + 1;
-
-                parent.leftChild = newLeftNode;
-                System.out.print(newLeftNode.iData + " " + grandParentV + " " + greatGrandParentV + "\n");
-                build(parent.leftChild, grandParent.iData, greatGrandParent.iData);
+        // Check if every number to highest value is in hashmap, if not add it w/ count 0
+        for(int i=1; i<=highestValue; i++) {
+            if (hmap.get(i) == null) {
+                hmap.put(i, 0);
             }
+        }
 
-            // Add Right Child
-            //current = parent.rightChild;
-            if(parent.rightChild == null) { // if end of the line insert on right
-                newRightNode.iData = parent.iData + grandParent.iData; //parent + parent’s parent
-                newRightNode.nodeDepth = parent.nodeDepth + 1;
-
-                parent.rightChild = newRightNode;
-                System.out.print(newRightNode.iData + " " + grandParentV + " " + greatGrandParentV + "\n");
-                build(parent.rightChild, parent.iData , grandParent.iData);
+        // Print out all missing numbers
+        System.out.print("Missing: ");
+        for (int key : hmap.keySet()) {
+            if(hmap.get(key) == 0) {
+                System.out.print(key + " ");
             }
+        }
+
+        // Print out counts of all numbers
+        System.out.println("\nCounts");
+        for( Map.Entry<Integer, Integer> entry : hmap.entrySet() ){
+            System.out.println( entry.getKey() + ": " + entry.getValue() );
         }
     }
 
+    public void loopNumbers(Node localRoot) {
+        int count;
+
+        //traverse the tree and put each number into hashmap or increment count if value already exists
+        if(localRoot != null) {
+            if (hmap.get(localRoot.iData) == null) {
+                hmap.put(localRoot.iData, 1);
+            } else {
+                count = hmap.get(localRoot.iData);
+                count++;
+                hmap.put(localRoot.iData, count);
+            }
+
+            loopNumbers(localRoot.leftChild);
+            loopNumbers(localRoot.rightChild);
+        }
+    }
+
+    // Start recursive traversal based on type
     public void traverse(int traverseType) {
         switch(traverseType) {
             case 1: System.out.print("\nPreorder traversal: ");
