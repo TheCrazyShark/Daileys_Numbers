@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.lang.Math;
 
 public class Driver {
     public static int treeDepth;
@@ -14,7 +13,7 @@ public class Driver {
 
         DaileysTree = new DaileysTree(treeDepth);
         Menu();
-        //DaileysTree.findNumbers();
+        DaileysTree.findNumbers();
     }
 
     // Continue to ask the user if they want preorder, inorder, postorder tree traversal
