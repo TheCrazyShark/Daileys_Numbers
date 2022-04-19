@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+/*
+This project was made in cooperation between Shane Smith and Chad Green
+ */
+
 public class Driver {
     public static int treeDepth;
     public static DaileysTree DaileysTree;

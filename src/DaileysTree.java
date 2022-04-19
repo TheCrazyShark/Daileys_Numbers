@@ -31,6 +31,16 @@ public class DaileysTree {
         Node newLeftNode = new Node();    // make new node
         Node newRightNode = new Node();
         Node parent;
+        int count;
+
+        // Checks current value & puts number into hashmap or increment count if value already exists
+        if (hmap.get(current.iData) == null) {
+            hmap.put(current.iData, 1);
+        } else {
+            count = hmap.get(current.iData);
+            count++;
+            hmap.put(current.iData, count);
+        }
 
         while(current.nodeDepth != treeDepth && current.leftChild == null && current.rightChild == null) {
             parent = current;
@@ -62,10 +72,8 @@ public class DaileysTree {
         }
     }
 
-    // Determine the missing numbers as well as the count of every numbers
+    // Determine the missing numbers as well as display the count of every numbers
     public void findNumbers() {
-        loopNumbers(root); // Put all values from tree into hashmap
-
         // Check if every number to highest value is in hashmap, if not add it w/ count 0
         for(int i=1; i<=highestValue; i++) {
             if (hmap.get(i) == null) {
@@ -85,24 +93,6 @@ public class DaileysTree {
         System.out.println("\nCounts");
         for( Map.Entry<Integer, Integer> entry : hmap.entrySet() ){
             System.out.println( entry.getKey() + ": " + entry.getValue() );
-        }
-    }
-
-    public void loopNumbers(Node localRoot) {
-        int count;
-
-        //traverse the tree and put each number into hashmap or increment count if value already exists
-        if(localRoot != null) {
-            if (hmap.get(localRoot.iData) == null) {
-                hmap.put(localRoot.iData, 1);
-            } else {
-                count = hmap.get(localRoot.iData);
-                count++;
-                hmap.put(localRoot.iData, count);
-            }
-
-            loopNumbers(localRoot.leftChild);
-            loopNumbers(localRoot.rightChild);
         }
     }
 
